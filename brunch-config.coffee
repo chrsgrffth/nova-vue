@@ -1,13 +1,17 @@
 module.exports =
   paths:
-    watched: ['source', 'craft/templates']
+    watched: ['source']
 
   files:
     javascripts:
-      joinTo: 'js/main.js'
+      joinTo: 'js/app.js'
     stylesheets:
       sourceFiles: ['init.scss']
-      joinTo: 'css/main.css'
+      joinTo: 'css/app.css'
+
+  npm:
+    aliases:
+      'vue': 'vue/dist/vue.js'
 
   server:
     command: 'electron .'
