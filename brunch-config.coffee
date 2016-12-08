@@ -12,6 +12,8 @@ module.exports =
   npm:
     aliases:
       'vue': 'vue/dist/vue.js'
+    globals:
+      moment: 'moment'
 
   server:
     command: 'electron .'

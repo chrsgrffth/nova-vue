@@ -4,3 +4,4 @@ node_modules
 # Brunch built.
 public/js
 public/css
+public/settings.js

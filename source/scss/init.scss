@@ -27,6 +27,7 @@ html {
   background: transparent;
   position: fixed;
   font: menu;
+  z-index: 999;
 }
 
 main {
@@ -35,4 +36,5 @@ main {
 
 input {
   outline: none;
+  line-height: 2.00;
 }
