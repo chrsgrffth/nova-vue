@@ -70,9 +70,10 @@ module.exports =
 
     <section class="pt-8 pb-7">
       <article v-if="createNewNote" class="px-3 mt-5">
-        <a href="#" @click="goToNote" class="d-block wp-100 px-4 py-3 rounded">
+        <a href="#" @click="goToNote" class="d-block wp-100 px-4 py-3 rounded" style="background: rgba(0,0,0,0.02);">
           <p class="tn-1 cg-4 antialiased">Create New Note</p>
           <h1 class="t-1 cg-2 antialiased">{{ search.query }}</h1>
+          <span class="tn-1 cg-5 antialiased b-7 rounded px-1">Enter</span>
         </a>
       </article>
 
