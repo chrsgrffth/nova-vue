@@ -10,11 +10,14 @@ module.exports =
     index:
       default: -1
 
+  data: ->
+    commandMode: false
 
   methods:
 
     keyCommands: (e) ->
       target = e.currentTarget
+
       switch e.keyCode
         when 27 # Escape.
           console.log 'Return to Search'
@@ -25,6 +28,23 @@ module.exports =
         when 40 # Down.
           target.nextSibling.focus()
           break
+        when 91
+          @commandMode = true
+          console.log @commandMode
+
+      if @commandMode
+        switch e.keyCode
+          when 82
+            e.preventDefault()
+            @rename(document.activeElement.childNodes[0].querySelector('h1'))
+            break
+
+      target.addEventListener 'keyup', (e) ->
+        switch e.keyCode
+          when 91
+          
+            @commandMode = false
+            console.log @commandMode
 
     returnToSearch: (e) ->
       @$parent.focused = -1
@@ -45,15 +65,24 @@ module.exports =
       @activeNote = index
       console.log 'Go to the Note', @activeNote
 
-    rename: (e, val) ->
-      e.currentTarget.contentEditable = val
+    rename: (el) ->
+      el.contentEditable = true
+      el.focus()
+
+      range = document.createRange()
+      range.selectNode(el)
+      window.getSelection().addRange(range)
+
+      el.addEventListener 'blur', (e) ->
+        el.contentEditable = false
+
 
 </script>
 
 <template>
   <a 
     href="#"
-    @keyup="keyCommands"
+    @keydown="keyCommands"
     @click="goToNote($event, index)"
     @focus="previewNote(index)"
     class="note-heading"
