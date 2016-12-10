@@ -1,0 +1,28 @@
+.note {
+  @extend .wp-100;
+  @extend .px-3;
+
+  &.active {
+    @extend .px-0;
+  }
+}
+
+.note-heading {
+  @extend .d-block;
+  @extend .wp-100;
+  @extend .px-3;
+  @extend .rounded;
+
+  outline: none;
+
+  & > div {
+    @extend .px-3;
+    @extend .py-3;
+  }
+
+  &:focus {
+
+    & > div { @extend .cbgg-7; }
+    
+  }
+}

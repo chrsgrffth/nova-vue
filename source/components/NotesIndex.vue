@@ -1,16 +1,24 @@
 <script lang="coffee">
 
-fuse = require('fuse.js')
+focus = 'vue-focus'
 
 module.exports =
-  name: 'Home',
+  name: 'NotesIndex'
+
+  components:
+    NoteItem: require('./NoteItem')
+
+  directives:
+    focus: focus
 
   data: ->
     fuse: null
     notes: []
     focused: -1
     createNewNote: false
+    activeNote: -1
     search:
+      focused: false
       active: false
       query: ''
       results: []
@@ -80,25 +88,20 @@ module.exports =
       e.preventDefault()
       console.log @createNewNote
 
-    returnToSearch: (e) ->
-      console.log 'Return to the Search'
-
-    previewNote: (index) ->
-      @focused = index
-      console.log @focused
-
-    goToNote: ->
-      console.log 'Go to the Note'
-
 </script>
 
 <template>
-  <div class="hp-100">
-
+  <div id="page" class="hp-100">
     <section class="absolute top-0 left-0 z-9 wp-100 h-8 bb-7 cbgg-8">
       <div class="absolute wp-100 bottom-0 left-0 px-3 py-3">
         <form @submit="submitSearch" :class="{ 'shadow': search.active }">
-          <input v-model="search.query" @focus="activateSearch" @keyup="searchNotes" type="text" class="px-4 py-1 t-1 wp-100 cbg-white rounded">
+          <input
+            v-focus="search.focused"
+            v-model="search.query"
+            @blur="search.focused = false"
+            @focus="activateSearch"
+            @keyup="searchNotes"
+          type="text" class="px-4 py-1 t-1 wp-100 cbg-white rounded">
           <div class="absolute-right-middle pr-3">
             <span class="px-4 tn-1 cg-3 antialiased">{{ search.results.length }} notes</span>
           </div>
@@ -107,7 +110,7 @@ module.exports =
     </section>
 
     <section class="absolute top-0 left-0 hp-100 wp-100 pt-8">
-      <div class="hp-100 o-auto">
+      <div class="hp-100 o-auto pt-3">
         <article v-if="createNewNote" class="px-3 mt-5 wp-100">
           <a href="#" @click="goToNote" class="d-block wp-100 px-4 py-3 rounded" style="background: rgba(0,0,0,0.02);">
             <p class="tn-1 cg-4 antialiased">Create New Note</p>
@@ -116,14 +119,7 @@ module.exports =
           </a>
         </article>
 
-        <article v-for="(note, index) in search.results" @keyup.esc="returnToSearch" class="wp-100 px-3" :class="{ 'mt-5': index == 0 }">
-          <a href="#" @click="goToNote" @focus="previewNote(index)" class="d-block wp-100 px-4 py-3 rounded">
-            <h1 class="t-1 c-black">{{ note.title }}</h1>
-            <p class="tn-1 cg-3 antialiased">{{ note.dateModifiedPretty }}</p>
-
-            <div v-if="index === focused">{{ note.preview }}</div>
-          </a>
-        </article>
+        <note-item v-for="(note, index) in search.results" :note="note" :index="index"></note-item>
       </div>
     </section>
 

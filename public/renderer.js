@@ -18,12 +18,12 @@ fs.readdir(settings.sourceFolder, (err, files) => {
       if (!stats.isFile()) return;
 
       var fileContents = fs.readFileSync(filePath, 'utf8');
-      var filePreview = fileContents.replace(/[\/\^\*`#:{}=\-_~]/g,"").substring(0, 320)+'...';
+      var filePreview = fileContents.replace(/[\^\*`#{}=\-_~]/g,"").substring(0, 320)+'...';
       var fileContentsRaw = fileContents.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"");
       fileContentsRaw = fileContentsRaw.replace(/\s{2,}/g,"");
 
       note = {
-        title: file.substr(0, file.lastIndexOf('.')) || file,
+        title: file.substr(0, file.lastIndexOf('.')).replace(':','/') || file,
         preview: filePreview,
         content: fileContents,
         raw: fileContentsRaw,
