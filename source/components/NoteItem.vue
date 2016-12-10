@@ -30,21 +30,18 @@ module.exports =
           break
         when 91
           @commandMode = true
-          console.log @commandMode
 
       if @commandMode
         switch e.keyCode
           when 82
             e.preventDefault()
-            @rename(document.activeElement.childNodes[0].querySelector('h1'))
+            @rename(document.activeElement.childNodes[0].querySelector('h1'), document.activeElement)
             break
 
       target.addEventListener 'keyup', (e) ->
         switch e.keyCode
           when 91
-          
             @commandMode = false
-            console.log @commandMode
 
     returnToSearch: (e) ->
       @$parent.focused = -1
@@ -65,7 +62,7 @@ module.exports =
       @activeNote = index
       console.log 'Go to the Note', @activeNote
 
-    rename: (el) ->
+    rename: (el, focusOutEl) ->
       el.contentEditable = true
       el.focus()
 
@@ -75,6 +72,10 @@ module.exports =
 
       el.addEventListener 'blur', (e) ->
         el.contentEditable = false
+
+      el.addEventListener 'keydown', (e) ->
+        e.preventDefault()
+        focusOutEl.focus() if e.keyCode == 13
 
 
 </script>
@@ -89,7 +90,7 @@ module.exports =
     :class="{ 'active': $parent.focused == index }"
   >
     <div class="o-hidden">
-      <h1 @click="rename($event, true)" @blur="rename($event, false)" class="t-1 c-black py-1 px-1">{{ note.title }}</h1>
+      <h1 @click="rename($event, true)" class="t-1 c-black py-1 px-1">{{ note.title }}</h1>
       <p class="tn-1 cg-3 antialiased px-1">{{ note.dateModifiedPretty }}</p>
       <div v-if="index === $parent.focused" class="mt-2 cg-1 antialiased px-1">{{ note.preview }}</div>
     </div>
