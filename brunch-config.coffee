@@ -14,6 +14,7 @@ module.exports =
       'vue': 'vue/dist/vue.js'
     globals:
       moment: 'moment'
+      Fuse: 'fuse.js'
 
   server:
     command: 'electron .'

@@ -10,14 +10,28 @@ window.notes = []
 
 fs.readdir(settings.sourceFolder, (err, files) => {
   files.forEach(function(file, index) {
-    fs.stat(settings.sourceFolder + '/' + file, function(err, stats) {
+
+    var filePath = settings.sourceFolder + '/' + file;
+
+    fs.stat(filePath, function(err, stats) {
+
+      if (!stats.isFile()) return;
+
+      var fileContents = fs.readFileSync(filePath, 'utf8');
+      var filePreview = fileContents.replace(/[\/\^\*`#:{}=\-_~]/g,"").substring(0, 320)+'...';
+      var fileContentsRaw = fileContents.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"");
+      fileContentsRaw = fileContentsRaw.replace(/\s{2,}/g,"");
+
       note = {
         title: file.substr(0, file.lastIndexOf('.')) || file,
+        preview: filePreview,
+        content: fileContents,
+        raw: fileContentsRaw,
         dateModified: stats.mtime,
         dateModifiedPretty: moment(stats.mtime).fromNow()
       }
 
-      if (!file.charAt(0).match(/^(\.|\_)$/)) {
+      if (!file.charAt(0).match(/^(\.|\_)$/) && file != 'Notes & Settings') {
         window.notes.push(note)
       }
 
