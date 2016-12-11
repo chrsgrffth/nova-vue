@@ -31,6 +31,8 @@ module.exports =
     # Move to computed.
     @search.results = @notes
 
+    @$store.dispatch('getNotes', @notes)
+
     # http://fusejs.io/
     options =
       shouldSort: true

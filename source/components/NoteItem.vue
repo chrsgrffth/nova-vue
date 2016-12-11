@@ -3,15 +3,15 @@
 module.exports =
   name: 'NoteItem'
 
+  data: ->
+    commandMode: false
+
   props:
     note:
       required: true
       type: Object
     index:
       default: -1
-
-  data: ->
-    commandMode: false
 
   methods:
 
@@ -35,13 +35,12 @@ module.exports =
         switch e.keyCode
           when 82
             e.preventDefault()
+            @commandMode = false
             @rename(document.activeElement.childNodes[0].querySelector('h1'), document.activeElement)
             break
 
-      target.addEventListener 'keyup', (e) ->
-        switch e.keyCode
-          when 91
-            @commandMode = false
+    editNote: ->
+      @$store.dispatch('editNote', @note)
 
     returnToSearch: (e) ->
       @$parent.focused = -1
@@ -49,34 +48,22 @@ module.exports =
     previewNote: (index) ->
       @$parent.focused = index
 
-    goToNote: (e, index) ->
-      # page = document.getElementById('page')
-      # copy = e.currentTarget.cloneNode(true)
-      # wrap = document.createElement('div')
-      # wrap.appendChild(copy)
-      # page.appendChild(wrap)
-
-      # wrap.style.position = 'absolute'
-      # wrap.style.top = e.currentTarget.offsetTop + 'px'
-
-      @activeNote = index
-      console.log 'Go to the Note', @activeNote
-
     rename: (el, focusOutEl) ->
       el.contentEditable = true
       el.focus()
 
-      range = document.createRange()
-      range.selectNode(el)
-      window.getSelection().addRange(range)
+      # range = document.createRange()
+      # range.selectNode(el)
+      # window.getSelection().addRange(range)
 
       el.addEventListener 'blur', (e) ->
         el.contentEditable = false
 
       el.addEventListener 'keydown', (e) ->
-        e.preventDefault()
-        focusOutEl.focus() if e.keyCode == 13
-
+        if e.keyCode == 13
+          e.preventDefault()
+          document.getSelection().empty()
+          focusOutEl.focus()
 
 </script>
 
@@ -84,15 +71,16 @@ module.exports =
   <a 
     href="#"
     @keydown="keyCommands"
-    @click="goToNote($event, index)"
+    @keyup="commandMode = false"
+    @click="editNote"
     @focus="previewNote(index)"
     class="note-heading"
     :class="{ 'active': $parent.focused == index }"
   >
     <div class="o-hidden">
-      <h1 @click="rename($event, true)" class="t-1 c-black py-1 px-1">{{ note.title }}</h1>
+      <h1 class="t-1 c-black py-1 px-1">{{ note.title }} <span v-if="commandMode" class="tn-1 cg-5 antialiased"><span class="b-6 rounded px-1">r</span> to Rename</span></h1>
       <p class="tn-1 cg-3 antialiased px-1">{{ note.dateModifiedPretty }}</p>
-      <div v-if="index === $parent.focused" class="mt-2 cg-1 antialiased px-1">{{ note.preview }}</div>
+      <div v-if="index === $parent.focused" class="mt-2 cg-1 antialiased px-1" style="word-wrap: break-word;">{{ note.preview }}</div>
     </div>
   </a>
 </template>

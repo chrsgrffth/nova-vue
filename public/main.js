@@ -9,12 +9,16 @@ const globalShortcut = electron.globalShortcut
 const path = require('path')
 const url = require('url')
 
+const VUEJS_DEVTOOLS = '/Users/chrisg/Library/Application Support/Google/Chrome/Default/Extensions/nhdogjmejiglipccpnnnanhbledajbpd/2.3.1_0'
+
 require('electron-reload')(__dirname);
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
 let mainWindowVisible
+
+
 
 function createWindow () {
 
@@ -33,6 +37,8 @@ function createWindow () {
     protocol: 'file:',
     slashes: true
   }))
+
+  BrowserWindow.addDevToolsExtension(VUEJS_DEVTOOLS)
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools()

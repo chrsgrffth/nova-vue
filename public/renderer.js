@@ -27,6 +27,7 @@ fs.readdir(settings.sourceFolder, (err, files) => {
         preview: filePreview,
         content: fileContents,
         raw: fileContentsRaw,
+        filename: file,
         dateModified: stats.mtime,
         dateModifiedPretty: moment(stats.mtime).fromNow()
       }
