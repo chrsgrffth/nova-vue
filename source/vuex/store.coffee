@@ -5,7 +5,7 @@ Vue.use(Vuex)
 
 state =
   notes: []
-  activeNote: {}
+  activeNote: null
 
 mutations =
   GET_NOTES: (state, notes) ->
@@ -14,7 +14,7 @@ mutations =
   EDIT_NOTE: (state, note) ->
     state.activeNote = note
 
-actions = 
+actions =
   getNotes: ({ commit }) =>
     commit('GET_NOTES', notes)
 
@@ -26,7 +26,3 @@ module.exports = new Vuex.Store
   state: state
   mutations: mutations
   actions: actions
-
-###
-https://coligo.io/learn-vuex-by-building-notes-app/
-###

@@ -15,6 +15,8 @@ module.exports =
     globals:
       moment: 'moment'
       Fuse: 'fuse.js'
+      marked: 'marked'
+      focus: 'vue-focus'
 
   server:
     command: 'electron .'

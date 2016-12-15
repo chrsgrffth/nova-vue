@@ -1,0 +1,15 @@
+.markdown {
+  h2 {
+    @extend .t-2;
+    @extend .mb-3;
+  }
+
+  p {
+    @extend .mb-3;
+  }
+
+  ul,
+  ol {
+    @extend .mb-3;
+  }
+}
