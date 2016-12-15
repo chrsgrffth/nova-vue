@@ -12,9 +12,11 @@ module.exports =
 
   data: ->
     isMounted: false
+    editMode: false
     htmlContent: null
     rawContent: null
     formattedContent: null
+
 
   mounted: ->
     @isMounted = true
@@ -31,11 +33,6 @@ module.exports =
       else
         return 0
 
-
-    # formattedContent: ->
-    #   return marked(@note.content)
-
-
   methods:
     keyCommands: (e) ->
       target = e.currentTarget
@@ -44,33 +41,28 @@ module.exports =
         when 27 # Escape.
           @$store.state.activeNote = null
           break
-        else
-          # @formattedContent = marked(e.currentTarget.innerHTML)
-          @rawContent = e.currentTarget.textContent
-
 
 </script>
 
 <template>
-  <div v-if="isMounted" class="pt-8 px-5">
+  <div v-if="isMounted" v-focus="true" @keyup.esc="$store.state.activeNote = null" class="pt-8 pb-5 px-5 hp-100" tabindex="0">
 
-    <div class="container">
-      <div class="col-md-8 markdown">
-        <!-- <div contenteditable="true" v-focus="true" v-html="formattedContent" @keyup="keyCommands" tabindex="0"></div> -->
-        <div contenteditable="true" v-focus="true" @keyup="keyCommands" tabindex="0">
-          {{ markdown }}
+    <section class="hp-100 o-auto">
+      <div class="container">
+        <div class="col-md-8 markdown">
+          <div v-if="!editMode" v-html="formattedContent" tabindex="0"></div>
+          <div v-if="editMode" contenteditable="true" tabindex="0">
+            {{ note.content }}
+          </div>
+
         </div>
-
-        <!-- <div class="wp-100 mt-8">
-          <pre class="my-2">{{ htmlContent }}</pre>
-          <pre class="my-2">{{ markdown }}</pre>
-          <pre class="my-2">{{ rawContent }}</pre>
-        </div> -->
       </div>
-    </div>
+    </section>
 
-    <footer class="absolute bottom-0 left-0 wp-100 py-3 px-5">
-      <p class="tn-1">{{ wordCount }} Words</p>
+    <footer class="fixed bottom-0 left-0 wp-100 h-5 px-5 bt-7 cbgg-7">
+      <div class="flex items-center hp-100">
+        <p class="tn-1">{{ wordCount }} Words</p>
+      </div>
     </footer>
 
   </div>
