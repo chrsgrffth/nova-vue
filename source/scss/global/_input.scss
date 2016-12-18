@@ -1,0 +1,9 @@
+textarea {
+  @extend .wp-100;
+  @extend .hp-100;
+  @extend .t-0;
+
+  resize: none;
+  outline: none;
+  background: transparent;
+}

@@ -45,16 +45,20 @@ module.exports =
 </script>
 
 <template>
-  <div v-if="isMounted" v-focus="true" @keyup.esc="$store.state.activeNote = null" class="pt-8 pb-5 px-5 hp-100" tabindex="0">
+  <div v-if="isMounted" class="pt-8 pb-5 hp-100" tabindex="0">
 
-    <section class="hp-100 o-auto">
-      <div class="container">
-        <div class="col-md-8 markdown">
+    <section class="hp-100">
+      <div class="hp-100 container">
+        <div class="hp-100 markdown">
+          <textarea v-focus="true" @keyup.esc="$store.state.activeNote = null" tabindex="0" class="px-5 py-5">
+            {{ note.content }}
+          </textarea>
+          <!--
           <div v-if="!editMode" v-html="formattedContent" tabindex="0"></div>
           <div v-if="editMode" contenteditable="true" tabindex="0">
             {{ note.content }}
           </div>
-
+        -->
         </div>
       </div>
     </section>

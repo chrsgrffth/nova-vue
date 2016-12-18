@@ -17,7 +17,7 @@ fs.readdir(settings.sourceFolder, (err, files) => {
 
       if (!stats.isFile()) return;
 
-      var fileContents = fs.readFileSync(filePath, 'utf8');
+      var fileContents = fs.readFileSync(filePath, 'utf8').replace(/^\s+|\s+$/g,'');
       var filePreview = fileContents.replace(/[\^\*`#{}=\-_~]/g,"").substring(0, 320)+'...';
       var fileContentsRaw = fileContents.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"");
       fileContentsRaw = fileContentsRaw.replace(/\s{2,}/g,"");
